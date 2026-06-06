@@ -7,14 +7,15 @@ let outputPath = path.join(__dirname, "output");
 function rename() {
   const files = fs.readdirSync(inputPath);
   files.forEach((item) => {
-    let id = fs.readJSONSync("data.json").id;
+    const data = fs.readJSONSync("data.json");
     const ext = path.extname(item);
-    const outputPath = path.join(__dirname, "output", `aset-${id}` + ext);
-    const input = path.join(__dirname, "input", item);
-    fs.renameSync(input, outputPath);
-    console.log(`berhasil mengubah nama file ${item} menjadi aset-${id}${ext}`);
+    const outputFile = path.join(outputPath, `${data.nama_file}-${data.id}` + ext);
+    const inputFile = path.join(inputPath, item);
+    fs.renameSync(inputFile, outputFile);
+    console.log(`berhasil mengubah nama file ${item} menjadi ${data.nama_file}-${data.id}${ext}`);
     fs.writeJSONSync("data.json", {
-      id: id + 1,
+      nama_file: data.nama_file,
+      id: data.id + 1,
     });
   });
 }
@@ -24,11 +25,10 @@ function checkDir() {
   const checkOut = fs.existsSync(outputPath);
   if (!checkOut) {
     fs.mkdirSync(outputPath);
-  } else if (!checkIn) {
+  }
+  if (!checkIn) {
     fs.mkdirSync(inputPath);
   }
-
-  
   rename();
 }
 
