@@ -10,7 +10,8 @@ function rename() {
     const data = fs.readJSONSync("data.json");
     const ext = path.extname(item);
     const outputFile = path.join(outputPath, `${data.nama_file}-${data.id}` + ext);
-    const inputFile = path.join(inputPath, item);
+    const inputFile = path.jozin(inputPath, "input", item);
+    
     fs.renameSync(inputFile, outputFile);
     console.log(`berhasil mengubah nama file ${item} menjadi ${data.nama_file}-${data.id}${ext}`);
     fs.writeJSONSync("data.json", {
